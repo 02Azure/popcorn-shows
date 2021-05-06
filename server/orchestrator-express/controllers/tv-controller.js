@@ -1,20 +1,33 @@
+const Redis = require("ioredis")
 const axios = require("axios")
+const redis = new Redis()
 const base = "http://localhost:4002"
 
 class TvController {
   static async getAll(req, res, next) {
-    axios({
-      method: "GET",
-      url: base + "/tv",
+    redis.get("tvseries")
+    .then(result => {
+      if(!result) throw "gofetchnewdata"
+
+      res.status(200).json({ movies: JSON.parse(result)})
     })
 
+    .catch(() => { //jika redis error atau hasil null, fecth
+      axios({
+        method: "GET",
+        url: base + "/tv"
+      })
+
       .then(({ data }) => {
+        redis.set("tvseries", JSON.stringify(data.tvseries))
+
         res.status(200).json({ tvseries: data.tvseries })
       })
 
       .catch(({ response }) => {
         res.status(response.status || 500).json({ msg: response.data.msg || "Internal Server Error" })
       })
+    })
   }
 
   static async getOne(req, res, next) {
@@ -48,6 +61,7 @@ class TvController {
     })
 
       .then(({ data }) => {
+        redis.del("tvseries")
         res.status(200).json(data)
       })
 
@@ -72,6 +86,7 @@ class TvController {
     })
 
       .then(({ data }) => {
+        redis.del("tvseries")
         res.status(201).json(data)
       })
 
@@ -87,6 +102,7 @@ class TvController {
     })
 
       .then(({ data }) => {
+        redis.del("tvseries")
         res.status(200).json(data)
       })
 

@@ -1,19 +1,31 @@
+const Redis = require("ioredis")
 const axios = require("axios")
+const redis = new Redis()
 const base = "http://localhost:4001"
 
 class MovieController {
   static async getAll(req, res, next) {
-    axios({
-      method: "GET",
-      url: base + "/movies",
-    })
+    redis.get("movies")
+      .then(result => {
+        if(!result) throw "gofetchnewdata"
 
-      .then(({ data }) => {
-        res.status(200).json({ movies: data.movies })
+        res.status(200).json({ movies: JSON.parse(result)})
       })
 
-      .catch(({ response }) => {
-        res.status(response.status || 500).json({ msg: response.data.msg || "Internal Server Error" })
+      .catch(() => { //jika redis error atau hasil null, fecth
+        axios({
+          method: "GET",
+          url: base + "/movies"
+        })
+
+        .then(({ data }) => {
+          redis.set("movies", JSON.stringify(data.movies))
+          res.status(200).json({ movies: data.movies })
+        })
+  
+        .catch(({ response }) => {
+          res.status(response.status || 500).json({ msg: response.data.msg || "Internal Server Error" })
+        })
       })
   }
 
@@ -48,6 +60,7 @@ class MovieController {
     })
 
       .then(({ data }) => {
+        redis.del("movies")
         res.status(200).json(data)
       })
 
@@ -72,6 +85,7 @@ class MovieController {
     })
 
       .then(({ data }) => {
+        redis.del("movies")
         res.status(201).json(data)
       })
 
@@ -87,6 +101,7 @@ class MovieController {
     })
 
       .then(({ data }) => {
+        redis.del("movies")
         res.status(200).json(data)
       })
 
