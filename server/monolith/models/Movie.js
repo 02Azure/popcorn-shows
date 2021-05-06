@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb")
 const { getDatabase } = require("../config")
 
 class Movie {
@@ -6,19 +7,19 @@ class Movie {
   }
 
   static async getOne(id) {
-    return getDatabase("movies").find().toArray()
+    return getDatabase("movies").findOne({ _id: ObjectId(id) })
   }
 
   static async edit(id, newData) {
-    return getDatabase("movies").find().toArray()
+    return getDatabase("movies").updateOne({ _id: ObjectId(id) }, { $set: newData })
   }
 
-  static async add(newMovies) {
-    return getDatabase("movies").find().toArray()
+  static async add(newMovie) {
+    return getDatabase("movies").insertOne(newMovie)
   }
 
   static async delete(id) {
-    return getDatabase("movies").find().toArray()
+    return getDatabase("movies").deleteOne({ _id: ObjectId(id) })
   }
 }
 
