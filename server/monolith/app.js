@@ -1,6 +1,6 @@
 const cors = require('cors')
 const express = require('express')
-const { connectdb } = require("./mongodb-config")
+const { connectdb } = require("./config")
 const app = express()
 const port = process.env.PORT || 3000
 const index = require("./routes")

@@ -1,4 +1,4 @@
-const { Movie } = require("../models/Movie")
+const Movie = require("../models/Movie")
 
 class Controller {
   static async getAll(req, res, next) {

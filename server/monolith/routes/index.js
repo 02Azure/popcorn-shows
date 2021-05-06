@@ -4,6 +4,6 @@ const movies = require("./movies")
 const tvseries = require("./tvseries")
 
 router.use("/movies", movies)
-router.use("/tvseries", tvseries)
+router.use("/tv", tvseries)
 
 module.exports = router
