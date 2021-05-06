@@ -1,7 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Controller = require("../controllers/index-controller")
+const TvseriesController = require("../controllers/index-controller")
 
-router.get("/", Controller.getAll)
+router.get("/", TvseriesController.getAll)
+router.post("/", TvseriesController.add)
+router.get("/:id", TvseriesController.getOne)
+router.put("/:id", TvseriesController.edit)
+router.delete("/:id", TvseriesController.delete)
 
 module.exports = router
