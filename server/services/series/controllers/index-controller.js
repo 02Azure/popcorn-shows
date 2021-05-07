@@ -20,7 +20,6 @@ class Controller {
       res.status(200).json({ tv })
 
     } catch(err) {
-      console.log(err)
       res.status(err.code || 500).json({ msg: err.msg || "Internal Server Error" })
     }
   }
