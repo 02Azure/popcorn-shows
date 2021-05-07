@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server")
 const { default: axios } = require("axios")
+const Redis = require("ioredis")
+const redis = new Redis()
 
 const baseMovie = "http://localhost:4001"
 const baseTv = "http://localhost:4002"
@@ -79,16 +81,27 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     movies: () => {
-      return axios({
-        method: "GET",
-        url: baseMovie + "/movies"
-      })
-        .then(({ data }) => {
-          return data.movies
+      return redis.get("movies")
+        .then(movies => {
+          if(movies) return JSON.parse(movies)
+
+          throw "movies cache not found"
         })
-      
-        .catch(({ response }) => {
-          throw response.data.msg
+
+        .catch(() => {
+          return axios({
+            method: "GET",
+            url: baseMovie + "/movies"
+          })
+            .then(({ data }) => {
+              redis.set("movies", JSON.stringify(data.movies))
+              console.log("hrs fetch dulu")
+              return data.movies
+            })
+          
+            .catch(({ response }) => {
+              throw response.data.msg
+            })
         })
     },
 
@@ -100,7 +113,6 @@ const resolvers = {
         url: baseMovie + "/movies/" + _id
       })
         .then(({ data }) => {
-          console.log(data)
           return data.movie
         })
       
@@ -110,16 +122,26 @@ const resolvers = {
     },
 
     tvseries: () => {
-      return axios({
-        method: "GET",
-        url: baseTv + "/tv"
-      })
-        .then(({ data }) => {
-          return data.tvseries
+      return redis.get("tvseries")
+        .then(tvseries => {
+          if(tvseries) return JSON.parse(tvseries)
+
+          throw "tvseries cache not found"
         })
-      
-        .catch(({ response }) => {
-          throw response.data.msg
+
+        .catch(() => {
+          return axios({
+            method: "GET",
+            url: baseMovie + "/tv"
+          })
+            .then(({ data }) => {
+              redis.set("tvseries", JSON.stringify(data.tvseries))
+              return data.tvseries
+            })
+          
+            .catch(({ response }) => {
+              throw response.data.msg
+            })
         })
     },
 
@@ -131,7 +153,6 @@ const resolvers = {
         url: baseTv + "/tv/" + _id
       })
         .then(({ data }) => {
-          console.log(data)
           return data.tv
         })
       
@@ -158,6 +179,7 @@ const resolvers = {
         data: input
       })
         .then(({ data }) => {
+          redis.del("movies")
           return data
         })
       
@@ -174,6 +196,7 @@ const resolvers = {
         url: baseMovie + "/movies/" + _id
       })
         .then(({ data }) => {
+          redis.del("movies")
           return data
         })
       
@@ -198,6 +221,7 @@ const resolvers = {
         data: input
       })
         .then(({ data }) => {
+          redis.del("movies")
           return data
         })
       
@@ -222,6 +246,7 @@ const resolvers = {
         data: input
       })
         .then(({ data }) => {
+          redis.del("tvseries")
           return data
         })
       
@@ -238,6 +263,7 @@ const resolvers = {
         url: baseTv + "/tv/" + _id
       })
         .then(({ data }) => {
+          redis.del("tvseries")
           return data
         })
       
@@ -262,6 +288,7 @@ const resolvers = {
         data: input
       })
         .then(({ data }) => {
+          redis.del("tvseries")
           return data
         })
       
