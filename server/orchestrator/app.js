@@ -95,7 +95,6 @@ const resolvers = {
           })
             .then(({ data }) => {
               redis.set("movies", JSON.stringify(data.movies))
-              console.log("hrs fetch dulu")
               return data.movies
             })
           

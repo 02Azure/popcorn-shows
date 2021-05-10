@@ -26,7 +26,10 @@ export const GET_MOVIE_BYID = gql`
   query getMovieById {
     movie (_id: "6093dd06e5f8282ad155f1bb") {
       title
+      overview
+      poster_path
       popularity
+      tags
     }
 }
 `

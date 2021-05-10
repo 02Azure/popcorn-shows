@@ -5,16 +5,18 @@ import { useQuery } from "@apollo/client"
 import { GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
 import displayHandler from "../helpers/displayHandler"
 
-export default function Home() {
+export default function Home({ navigation }) {
   const movies = useQuery(GET_MOVIES)
   const tvseries = useQuery(GET_TVSERIES)
 
   function showTileCb(state) {
     let shows = Object.keys(state.data)[0]
+    
     return state.data[shows].map(show => 
       <ShowTile
         { ...show }
         key = { show._id }
+        navigation = { navigation }
       />  
     )
   }
@@ -46,6 +48,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   showTilesContainer: {
     borderColor: "red",
-    borderWidth: 2
+    borderWidth: 2,
+    flexDirection: "row"
   },
 })
