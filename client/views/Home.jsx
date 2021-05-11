@@ -17,6 +17,7 @@ export default function Home({ navigation }) {
         { ...show }
         key = { show._id }
         navigation = { navigation }
+        showType = { shows }
       />  
     )
   }
@@ -27,6 +28,8 @@ export default function Home({ navigation }) {
   return(
     <View>
       <Text>Welcome to Popcorn Shows!</Text>
+      <Text onPress={ () => { navigation.navigate("Add", { show: "movie" } ) } }>Add new Movie</Text>
+      <Text onPress={ () => { navigation.navigate("Add", { show: "tv" } ) } }>Add new Tv</Text>
 
       <View>
         <Text>Movies</Text>

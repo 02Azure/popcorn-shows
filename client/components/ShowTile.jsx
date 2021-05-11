@@ -1,9 +1,9 @@
 import React from "react"
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
-export default function ShowTile({ _id, title, popularity, poster_path, navigation }) {
+export default function ShowTile({ _id, title, popularity, poster_path, navigation, showType }) {
   return(
-    <TouchableOpacity style={ styles.tileContainer } onPress={() => { navigation.navigate("Detail", { _id, showType: "movie" }) }}>
+    <TouchableOpacity style={ styles.tileContainer } onPress={() => { navigation.navigate("Detail", { _id, showType }) }}>
       <View style={ styles.imageContainer }>
         <Image
           style = { styles.movieImage }

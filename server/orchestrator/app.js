@@ -129,9 +129,10 @@ const resolvers = {
         })
 
         .catch(() => {
+          console.log('hrs fetch tv')
           return axios({
             method: "GET",
-            url: baseMovie + "/tv"
+            url: baseTv + "/tv"
           })
             .then(({ data }) => {
               redis.set("tvseries", JSON.stringify(data.tvseries))

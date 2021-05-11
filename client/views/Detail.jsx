@@ -6,7 +6,9 @@ import displayHandler from "../helpers/displayHandler"
 
 export default function Detail({ route }) {
   const { _id, showType } = route.params
-  const show = showType === "movie" ? useQuery(GET_MOVIE_BYID) : useQuery(GET_TV_BYID)
+  const show = showType === "movies" ? 
+    useQuery(GET_MOVIE_BYID, { variables: { _id } }) : 
+    useQuery(GET_TV_BYID, { variables: { _id } })
 
   function showDetailBox(state) {
     let showDetail = Object.keys(state.data)[0]

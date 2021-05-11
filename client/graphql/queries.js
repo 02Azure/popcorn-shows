@@ -23,22 +23,25 @@ export const GET_TVSERIES = gql`
 `
 
 export const GET_MOVIE_BYID = gql`
-  query getMovieById {
-    movie (_id: "6093dd06e5f8282ad155f1bb") {
+  query getMovieById($_id: ID) {
+    movie(_id: $_id) {
       title
       overview
       poster_path
       popularity
       tags
     }
-}
+  }
 `
 
 export const GET_TV_BYID = gql`
-  query getTvById {
-    tv (_id: "60951511df8eeae2843e5459") {
+  query getTvById($_id: ID) {
+    tv(_id: $_id) {
       title
+      overview
+      poster_path
       popularity
+      tags
     }
 }
 `
