@@ -129,7 +129,6 @@ const resolvers = {
         })
 
         .catch(() => {
-          console.log('hrs fetch tv')
           return axios({
             method: "GET",
             url: baseTv + "/tv"

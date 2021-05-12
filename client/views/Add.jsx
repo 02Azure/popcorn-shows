@@ -1,13 +1,20 @@
 import React from "react"
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { ADD_TV } from "../graphql/mutations"
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
+import { GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
+import { ADD_MOVIE, ADD_TV } from "../graphql/mutations"
+import Form from "../components/ShowForm"
 
-export default function Add({ route }) {
+export default function Add({ route, navigation }) {
   const { show } = route.params
 
   return(
     <View>
       <Text>Ini halaman Add { show }</Text>
+      <Form
+        submitAction = { show === "movie" ? ADD_MOVIE : ADD_TV }
+        refetchAction = { show === "movie" ? GET_MOVIES : GET_TVSERIES }
+        navigation = { navigation } 
+      />
     </View>
   )
 }

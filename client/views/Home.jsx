@@ -50,6 +50,7 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   showTilesContainer: {
+    flexWrap: "wrap",
     borderColor: "red",
     borderWidth: 2,
     flexDirection: "row"
