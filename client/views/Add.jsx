@@ -9,10 +9,10 @@ export default function Add({ route, navigation }) {
 
   return(
     <View>
-      <Text>Ini halaman Add { show }</Text>
+      <Text>Add new { show }</Text>
       <Form
         submitAction = { show === "movie" ? ADD_MOVIE : ADD_TV }
-        refetchAction = { show === "movie" ? GET_MOVIES : GET_TVSERIES }
+        refetchAction = { show === "movie" ? [{ query: GET_MOVIES }] : [{ query: GET_TVSERIES }] }
         navigation = { navigation } 
       />
     </View>

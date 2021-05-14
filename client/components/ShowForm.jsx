@@ -12,6 +12,7 @@ export default function Form(props) {
 
   function submitForm() {
     let input = {
+      _id: props._id,
       title,
       overview,
       poster_path,
@@ -19,10 +20,9 @@ export default function Form(props) {
       tags
     }
 
-    console.log(input, "<<<<<")
     submitAction({ 
       variables: input, 
-      refetchQueries: [{ query: props.refetchAction }]
+      refetchQueries: props.refetchAction
     })
       .then(() => {
         props.navigation.goBack()
@@ -41,7 +41,13 @@ export default function Form(props) {
 
       <View style={ styles.formGroup }>
         <Text style={ styles.label }>Overview:</Text>
-        <TextInput style={ styles.input } onChangeText={ newOverview => setOverview(newOverview) } value={ overview } />
+        <TextInput 
+          style = { styles.inputTextArea } 
+          multiline = { true }
+          numberOfLines = { 4 }
+          onChangeText = { newOverview => setOverview(newOverview) } 
+          value = { overview } 
+        />
       </View>
 
       <View style={ styles.formGroup }>
@@ -94,6 +100,17 @@ const styles = StyleSheet.create({
 
   input: {
     height: 38,
+    width: "80%",
+    borderWidth: 2,
+    paddingHorizontal: 10,
+    borderColor: "maroon",
+    textAlign: "center",
+    backgroundColor: "cornsilk",
+    fontSize: 18,
+    marginTop: 8
+  },
+
+  inputTextArea: {
     width: "80%",
     borderWidth: 2,
     paddingHorizontal: 10,

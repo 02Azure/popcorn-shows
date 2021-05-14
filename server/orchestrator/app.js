@@ -213,7 +213,7 @@ const resolvers = {
         popularity,
         tags
       }
-
+      console.log(_id, input, "<<<<< dalam server")
       return axios({
         method: "PUT",
         url: baseMovie + "/movies/" + _id,
