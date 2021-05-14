@@ -1,25 +1,38 @@
-import { useQuery } from "@apollo/client"
+import { useQuery, useMutation } from "@apollo/client"
 import React from "react"
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
-import { GET_MOVIE_BYID, GET_TV_BYID } from "../graphql/queries"
+import { GET_MOVIE_BYID, GET_TV_BYID, GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
 import { DELETE_MOVIE, DELETE_TV } from "../graphql/mutations"
 import displayHandler from "../helpers/displayHandler"
 const win = Dimensions.get("window")
 
 export default function Detail({ route, navigation }) {
   const { _id, showType } = route.params
+
   const show = showType === "movies" ? 
     useQuery(GET_MOVIE_BYID, { variables: { _id } }) : 
     useQuery(GET_TV_BYID, { variables: { _id } })
 
-  
-  function deleteShow() {
-
-  }
+  const [deleteShow, { data }] = showType === "movies" ? useMutation(DELETE_MOVIE) : useMutation(DELETE_TV)
 
   function showDetailBox(state) {
     let showDetail = Object.keys(state.data)[0]
     let { poster_path, title, overview, popularity, tags } = state.data[showDetail]
+
+  function deleteThisShow() {
+    deleteShow({
+      variables: {
+        _id
+      },
+      refetchQueries: showType === "movies" ? [{ query: GET_MOVIES }] : [{ query: GET_TVSERIES }]
+    })
+
+      .then(() => {
+        navigation.goBack()
+      })
+
+      .catch(err => console.log(err))
+  }
 
     return(
       <>
@@ -44,7 +57,7 @@ export default function Detail({ route, navigation }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress = { () => deleteShow() }
+              onPress = { () => deleteThisShow() }
               style = { [styles.customButton, styles.cancelButton] }
             >
               <Text style={ styles.buttonText }>Delete</Text>
