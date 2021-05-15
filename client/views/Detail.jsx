@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client"
-import React from "react"
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
+import React, { useState } from "react"
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native'
 import { GET_MOVIE_BYID, GET_TV_BYID, GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
 import { DELETE_MOVIE, DELETE_TV } from "../graphql/mutations"
 import displayHandler from "../helpers/displayHandler"
@@ -8,16 +8,13 @@ const win = Dimensions.get("window")
 
 export default function Detail({ route, navigation }) {
   const { _id, showType } = route.params
+  const [imageError, setImageError] = useState(false)
 
   const show = showType === "movies" ? 
     useQuery(GET_MOVIE_BYID, { variables: { _id } }) : 
     useQuery(GET_TV_BYID, { variables: { _id } })
 
   const [deleteShow, { data }] = showType === "movies" ? useMutation(DELETE_MOVIE) : useMutation(DELETE_TV)
-
-  function showDetailBox(state) {
-    let showDetail = Object.keys(state.data)[0]
-    let { poster_path, title, overview, popularity, tags } = state.data[showDetail]
 
   function deleteThisShow() {
     deleteShow({
@@ -34,14 +31,21 @@ export default function Detail({ route, navigation }) {
       .catch(err => console.log(err))
   }
 
+  function showDetailBox(state) {
+    let showDetail = Object.keys(state.data)[0]
+    let { poster_path, title, overview, popularity, tags } = state.data[showDetail]
+
     return(
       <>
-        <Image
-          style = { styles.movieImage }
-          source = { { uri: poster_path } }
-          defaultSource = { { uri: "https://reactnative.dev/img/tiny_logo.png" } }
-          resizeMode = "contain"
-        />
+        <View>
+          <Image
+            style = { styles.movieImage }
+            source = { !imageError ? { uri: poster_path || "https://reactnative.dev/img/tiny_logo.png" } : { uri: "https://reactnative.dev/img/tiny_logo.png" } }
+            resizeMode = "contain"
+            onError = { () => { setImageError(true) } }
+          />
+        </View>
+
         <View style={ styles.detailContainer }>
           <Text style={ styles.movieTitle }>{ title }</Text>
           <Text style={ styles.movieOverview }>{ overview }</Text>
@@ -70,6 +74,7 @@ export default function Detail({ route, navigation }) {
               <Text style={ styles.buttonText }>Return</Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </>
     )
@@ -87,15 +92,19 @@ export default function Detail({ route, navigation }) {
 const styles = StyleSheet.create({
   detailPage: {
     paddingHorizontal: 30,
+    paddingVertical: 20,
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "100%"
   },
 
   detailContainer: {
-
+    backgroundColor: "pink",
   }, 
 
   movieImage: {
-    height: win.height * 0.5,
-    width: win.height * 0.33,
+    height: win.height * 0.4,
+    width: win.height * 0.8 / 3,
     margin: "auto",
     borderColor: "black",
     borderWidth: 2

@@ -6,7 +6,7 @@ export default function Form(props) {
   const [title, setTitle] = useState(props.title || "")
   const [overview, setOverview] = useState(props.overview || "")
   const [poster_path, setPoster_path] = useState(props.poster_path || "")
-  const [popularity, setPopularity] = useState(props.popularity || 0)
+  const [popularity, setPopularity] = useState(props.popularity ? props.popularity.toString() : "0")
   const [tags, setTags] = useState(props.tags || "")
   const [submitAction, { data }] = useMutation(props.submitAction)
 

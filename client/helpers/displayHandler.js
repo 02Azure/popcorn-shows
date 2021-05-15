@@ -1,11 +1,12 @@
 import React from "react"
+import { Text } from 'react-native'
 
 export default function handleDisplay(state, onLoadCb) {
   if (state.loading) {
-    return <p>Loading....</p>
+    return <Text>Loading....</Text>
   
   } else if(state.error) {
-    return <p>Error :(</p>
+    return <Text>Error :(</Text>
   
   } else {
     return onLoadCb(state)

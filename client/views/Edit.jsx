@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
 import { GET_MOVIES, GET_MOVIE_BYID, GET_TVSERIES, GET_TV_BYID } from "../graphql/queries"
 import { EDIT_MOVIE, EDIT_TV } from "../graphql/mutations"
 import Form from "../components/ShowForm"
@@ -8,7 +8,7 @@ export default function Edit({ route, navigation }) {
   const { show, showType } = route.params
 
   return(
-    <View>
+    <ScrollView>
       <Text>Edit show</Text>
       <Form
         { ...show }
@@ -20,7 +20,7 @@ export default function Edit({ route, navigation }) {
           }
         navigation = { navigation } 
       />
-    </View>
+    </ScrollView>
   )
 }
 

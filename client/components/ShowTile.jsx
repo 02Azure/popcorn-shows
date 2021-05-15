@@ -1,14 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
 export default function ShowTile({ _id, title, popularity, poster_path, navigation, showType }) {
+  const [imageError, setImageError] = useState(false)
+  
   return(
     <TouchableOpacity style={ styles.tileContainer } onPress={() => { navigation.navigate("Detail", { _id, showType }) }}>
       <View style={ styles.imageContainer }>
         <Image
           style = { styles.movieImage }
-          source = { { uri: poster_path } }
-          defaultSource = { { uri: "https://reactnative.dev/img/tiny_logo.png" } }
+          source = { !imageError ? { uri: poster_path || "https://reactnative.dev/img/tiny_logo.png"  } : { uri: "https://reactnative.dev/img/tiny_logo.png" } }
+          onError = { () => { setImageError(true) } }
           resizeMode = "contain"
         />
       </View>
@@ -26,24 +28,27 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "blue",
     borderWidth: 1,
-    width: "20%",
-    justifyContent: "space-between"
+    width: "33%",
   },
 
   imageContainer: {
-    marginBottom: 20
-  },
-
-  movieImage: {
-    height: 75,
-    width: 50,
-    margin: "auto",
+    height: 130,
+    marginBottom: 20,
     borderColor: "black",
     borderWidth: 2
   },
 
+  movieImage: {
+    height: "100%",
+    width: "100%",
+    margin: "auto"
+
+  },
+
   bottomPart: {
-    backgroundColor: "yellow"
+    flex: 1,
+    backgroundColor: "yellow",
+    justifyContent: "space-between"
   },
 
   centerText: {

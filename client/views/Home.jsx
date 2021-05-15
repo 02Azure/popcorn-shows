@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import ShowTile from "../components/ShowTile"
 import { useQuery } from "@apollo/client"
 import { GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
@@ -26,25 +26,25 @@ export default function Home({ navigation }) {
   let tvTiles = displayHandler(tvseries, showTileCb)
 
   return(
-    <View>
+    <ScrollView>
       <Text>Welcome to Popcorn Shows!</Text>
       <Text onPress={ () => { navigation.navigate("Add", { show: "movie" } ) } }>Add new Movie</Text>
       <Text onPress={ () => { navigation.navigate("Add", { show: "tv" } ) } }>Add new Tv</Text>
 
-      <View>
-        <Text>Movies</Text>
-        <View style={ styles.showTilesContainer }>
-          { movieTiles }
-        </View> 
-      </View>
+        <View>
+          <Text>Movies</Text>
+          <View style={ styles.showTilesContainer }>
+            { movieTiles }
+          </View> 
+        </View>
 
-      <View>
-        <Text>Tv Series</Text>
-        <View style={ styles.showTilesContainer }>
-          { tvTiles }
-        </View> 
-      </View>
-    </View>
+        <View>
+          <Text>Tv Series</Text>
+          <View style={ styles.showTilesContainer }>
+            { tvTiles }
+          </View> 
+        </View>
+    </ScrollView>
   )
 }
 
