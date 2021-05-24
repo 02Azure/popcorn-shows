@@ -25,6 +25,14 @@ export default function Form(props) {
       refetchQueries: props.refetchAction
     })
       .then(() => {
+        if(props.updateLocals) {
+          let favorites = props.updateLocals()
+          let editedIndex = favorites.findIndex(favorite => favorite._id === input._id)
+          let newFavorites = [...favorites]
+          newFavorites[editedIndex] = input
+
+          props.updateLocals(newFavorites)
+        }
         props.navigation.goBack()
       })
 

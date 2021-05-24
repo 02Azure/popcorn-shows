@@ -6,6 +6,7 @@ import Home from "./views/Home"
 import Detail from "./views/Detail"
 import Add from "./views/Add"
 import Edit from "./views/Edit"
+import Favorites from "./views/Favorites"
 import client from "./graphql"
 
 const Stack = createStackNavigator();
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={ Home } />
           <Stack.Screen name="Detail" component={ Detail } />
+          <Stack.Screen name="Favorites" component={ Favorites } />
           <Stack.Screen name="Add" component={ Add } />
           <Stack.Screen name="Edit" component={ Edit } />
         </Stack.Navigator>

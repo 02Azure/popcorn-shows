@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
-export default function ShowTile({ _id, title, popularity, poster_path, navigation, showType }) {
+export default function ShowTile({ _id, title, popularity, poster_path, navigation, showType, isFavorited }) {
   const [imageError, setImageError] = useState(false)
   
   return(
-    <TouchableOpacity style={ styles.tileContainer } onPress={() => { navigation.navigate("Detail", { _id, showType }) }}>
+    <TouchableOpacity style={ styles.tileContainer } onPress={() => { navigation.navigate("Detail", { _id, showType, isFavorited }) }}>
       <View style={ styles.imageContainer }>
         <Image
           style = { styles.movieImage }

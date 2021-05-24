@@ -3,18 +3,49 @@ import React, { useState } from "react"
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native'
 import { GET_MOVIE_BYID, GET_TV_BYID, GET_MOVIES, GET_TVSERIES } from "../graphql/queries"
 import { DELETE_MOVIE, DELETE_TV } from "../graphql/mutations"
+import { movieFavoritesVar, tvFavoritesVar } from "../graphql/variables"
 import displayHandler from "../helpers/displayHandler"
 const win = Dimensions.get("window")
 
 export default function Detail({ route, navigation }) {
   const { _id, showType } = route.params
+  let favoritesVar 
+
+  if(showType === "movies") {
+    favoritesVar = movieFavoritesVar
+
+  } else {
+    favoritesVar = tvFavoritesVar
+  }
+
+  let favorites = favoritesVar()
+
+
   const [imageError, setImageError] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(route.params.isFavorited)
 
   const show = showType === "movies" ? 
     useQuery(GET_MOVIE_BYID, { variables: { _id } }) : 
     useQuery(GET_TV_BYID, { variables: { _id } })
 
   const [deleteShow, { data }] = showType === "movies" ? useMutation(DELETE_MOVIE) : useMutation(DELETE_TV)
+
+  function handleFavorites() {
+    if(isFavorited) {
+      let deletedIndex = favorites.findIndex(favorite => favorite._id === _id)
+      let newFavorites = [...favorites]
+      newFavorites.splice(deletedIndex, 1)
+
+      favoritesVar(newFavorites)
+      setIsFavorited(false)
+
+    } else {
+      let newFavorites = [...favorites, show.data[Object.keys(show.data)[0]]]
+
+      favoritesVar(newFavorites)
+      setIsFavorited(true)
+    }
+  }
 
   function deleteThisShow() {
     deleteShow({
@@ -25,6 +56,11 @@ export default function Detail({ route, navigation }) {
     })
 
       .then(() => {
+        let deletedIndex = favorites.findIndex(favorite => favorite._id === _id)
+        let newFavorites = [...favorites]
+        newFavorites.splice(deletedIndex, 1)
+        favoritesVar(newFavorites)
+
         navigation.goBack()
       })
 
@@ -54,7 +90,7 @@ export default function Detail({ route, navigation }) {
 
           <View style={ styles.buttonContainer }>
             <TouchableOpacity
-              onPress = { () => navigation.navigate("Edit", { showType, show: { _id, poster_path, title, overview, popularity, tags: tags.join(",") } }) }
+              onPress = { () => navigation.navigate("Edit", { showType, show: { _id, poster_path, title, overview, popularity, tags: tags.join(",") }, isFavorited }) }
               style = { [styles.customButton, styles.editButton] }
             >
               <Text style={ styles.buttonText }>Edit</Text>
@@ -68,10 +104,10 @@ export default function Detail({ route, navigation }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress = { () => navigation.goBack() }
+              onPress = { () => handleFavorites() }
               style = { [styles.customButton, styles.okButton] }
             >
-              <Text style={ styles.buttonText }>Return</Text>
+              <Text style={ styles.buttonText }>{ isFavorited ? "Unfavorite" : "Favorite" }</Text>
             </TouchableOpacity>
           </View>
 
@@ -95,10 +131,12 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: "center",
     justifyContent: "space-between",
-    height: "100%"
+    height: "100%",
+    backgroundColor: "green"
   },
 
   detailContainer: {
+    width: "100%",
     backgroundColor: "pink",
   }, 
 
@@ -139,7 +177,7 @@ const styles = StyleSheet.create({
   },
 
   okButton: {
-    backgroundColor: "forestgreen"
+    backgroundColor: "dodgerblue"
   },
 
   editButton: {

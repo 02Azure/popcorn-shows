@@ -1,7 +1,7 @@
 import React from "react"
 import { Text } from 'react-native'
 
-export default function handleDisplay(state, onLoadCb) {
+export default function handleDisplay(state, onLoadCb, cbInput) {
   if (state.loading) {
     return <Text>Loading....</Text>
   
@@ -9,6 +9,6 @@ export default function handleDisplay(state, onLoadCb) {
     return <Text>Error :(</Text>
   
   } else {
-    return onLoadCb(state)
+    return onLoadCb(state, cbInput)
   }
 }

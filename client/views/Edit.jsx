@@ -1,11 +1,12 @@
 import React from "react"
 import { StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
 import { GET_MOVIES, GET_MOVIE_BYID, GET_TVSERIES, GET_TV_BYID } from "../graphql/queries"
+import { movieFavoritesVar, tvFavoritesVar } from "../graphql/variables"
 import { EDIT_MOVIE, EDIT_TV } from "../graphql/mutations"
 import Form from "../components/ShowForm"
 
 export default function Edit({ route, navigation }) {
-  const { show, showType } = route.params
+  const { show, showType, isFavorited } = route.params
 
   return(
     <ScrollView>
@@ -13,6 +14,7 @@ export default function Edit({ route, navigation }) {
       <Form
         { ...show }
         submitAction = { showType === "movies" ? EDIT_MOVIE : EDIT_TV }
+        updateLocals = { isFavorited ? ( showType === "movies" ? movieFavoritesVar : tvFavoritesVar ) : undefined } //handle update favorite when server edited
         refetchAction = 
           { showType === "movies" ? 
             [{ query: GET_MOVIES }, { query: GET_MOVIE_BYID, variables: { _id: show._id } }] : 
