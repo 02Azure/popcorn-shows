@@ -20,7 +20,6 @@ export default function Detail({ route, navigation }) {
 
   let favorites = favoritesVar()
 
-
   const [imageError, setImageError] = useState(false)
   const [isFavorited, setIsFavorited] = useState(route.params.isFavorited)
 
@@ -86,11 +85,11 @@ export default function Detail({ route, navigation }) {
           <Text style={ styles.movieTitle }>{ title }</Text>
           <Text style={ styles.movieOverview }>{ overview }</Text>
           <Text>Popularity: { popularity } / 10</Text>
-          <Text style={ styles.movieTags}>Tags: { tags.join(", ") }</Text>
+          <Text style={ styles.movieTags}>{ tags.join(", ") }</Text>
 
           <View style={ styles.buttonContainer }>
             <TouchableOpacity
-              onPress = { () => navigation.navigate("Edit", { showType, show: { _id, poster_path, title, overview, popularity, tags: tags.join(",") }, isFavorited }) }
+              onPress = { () => navigation.navigate("Edit", { showType: showType === "movies" ? "movie" : "tv", show: { _id, poster_path, title, overview, popularity, tags: tags.join(",") }, isFavorited }) }
               style = { [styles.customButton, styles.editButton] }
             >
               <Text style={ styles.buttonText }>Edit</Text>
@@ -131,13 +130,13 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: "center",
     justifyContent: "space-between",
-    height: "100%",
-    backgroundColor: "green"
+    height: "100%"
   },
 
   detailContainer: {
     width: "100%",
-    backgroundColor: "pink",
+    paddingHorizontal: "2%",
+    alignItems: "center"
   }, 
 
   movieImage: {
@@ -150,21 +149,24 @@ const styles = StyleSheet.create({
 
   movieTitle: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 20,
+    textAlign: "center"
   },
 
   movieOverview: {
-    textAlign: "justify",
+    textAlign:"center",
     fontStyle: "italic"
   },
 
   movieTags: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: "rgb(46, 81, 162)"
   },
 
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    width: "100%"
   },
 
   customButton: {

@@ -1,25 +1,18 @@
 import React from "react"
-import { StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
-import { GET_MOVIES, GET_MOVIE_BYID, GET_TVSERIES, GET_TV_BYID } from "../graphql/queries"
+import { StyleSheet, Text, ScrollView } from 'react-native'
 import { movieFavoritesVar, tvFavoritesVar } from "../graphql/variables"
-import { EDIT_MOVIE, EDIT_TV } from "../graphql/mutations"
 import Form from "../components/ShowForm"
 
 export default function Edit({ route, navigation }) {
   const { show, showType, isFavorited } = route.params
 
   return(
-    <ScrollView>
-      <Text>Edit show</Text>
+    <ScrollView contentContainerStyle={ styles.contentMainContainer } >
+      <Text style={ styles.mainTitle }>Edit show</Text>
       <Form
         { ...show }
-        submitAction = { showType === "movies" ? EDIT_MOVIE : EDIT_TV }
-        updateLocals = { isFavorited ? ( showType === "movies" ? movieFavoritesVar : tvFavoritesVar ) : undefined } //handle update favorite when server edited
-        refetchAction = 
-          { showType === "movies" ? 
-            [{ query: GET_MOVIES }, { query: GET_MOVIE_BYID, variables: { _id: show._id } }] : 
-            [{ query: GET_TVSERIES }, { query: GET_TV_BYID, variables: { _id: show._id } }] 
-          }
+        showType = { showType }
+        updateLocals = { isFavorited ? ( showType === "movie" ? movieFavoritesVar : tvFavoritesVar ) : undefined } //handle update favorite when server edited
         navigation = { navigation } 
       />
     </ScrollView>
@@ -27,12 +20,15 @@ export default function Edit({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  tileContainer: {
-    padding: 10,
-    borderColor: "blue",
-    borderWidth: 1,
-    width: "20%",
-    justifyContent: "space-between"
-  }
+  contentMainContainer: {
+    alignItems: "center",
+    paddingVertical: "2%"
+  },
+
+  mainTitle: {
+    paddingTop: 3,
+    fontSize: 22,
+    fontWeight: "bold"
+  }, 
 })
 

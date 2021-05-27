@@ -30,20 +30,24 @@ export default function Home({ navigation }) {
   )
 
   return(
-    <ScrollView>
-      <Text>My Favorites</Text>
+    <ScrollView style={ styles.mainContainer } contentContainerStyle= { styles.mainContainerContent}>
+      <Text style={ styles.mainTitle }>My Favorites</Text>
 
-        <View>
-          <Text>Movies</Text>
+        <View style={ styles.showTypeContainer }>
+          <Text style={ styles.subTitle }>Movies</Text>
           <View style={ styles.showTilesContainer }>
-            { movieTiles }
+            { movieTiles.length ? movieTiles : 
+              <Text>Whoops, looks like you don't have any favorite yet in this show's category</Text>
+            }
           </View> 
         </View>
 
-        <View>
-          <Text>Tv Series</Text>
+        <View style={ styles.showTypeContainer }>
+          <Text style={ styles.subTitle }>Tv Series</Text>
           <View style={ styles.showTilesContainer }>
-            { tvTiles }
+            { tvTiles.length ? tvTiles :
+              <Text>Whoops, looks like you don't have any favorite yet in this show's category</Text>
+            }
           </View> 
         </View>
     </ScrollView>
@@ -51,9 +55,29 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    padding: "3%",
+  },
+  mainContainerContent: {
+    alignItems: "center"
+  },
+  showTypeContainer: {
+    paddingVertical: "5%",
+    width: "100%"
+  },  
+  mainTitle: {
+    paddingTop: 3,
+    fontSize: 22,
+    fontWeight: "bold"
+  },  
+  subTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+    paddingBottom: "2%"
+  },
   showTilesContainer: {
     flexWrap: "wrap",
-    borderColor: "red",
+    borderColor: "maroon",
     borderWidth: 2,
     flexDirection: "row"
   },

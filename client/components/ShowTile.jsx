@@ -16,8 +16,8 @@ export default function ShowTile({ _id, title, popularity, poster_path, navigati
       </View>
 
       <View style = { styles.bottomPart }>
-        <Text style = { styles.centerText }>{ title }</Text>
-        <Text>{ popularity }</Text>
+        <Text style = { styles.title }>{ title }</Text>
+        <Text style = { styles.popularity }>{ popularity }</Text>
       </View>
     </TouchableOpacity>
   )
@@ -26,16 +26,15 @@ export default function ShowTile({ _id, title, popularity, poster_path, navigati
 const styles = StyleSheet.create({
   tileContainer: {
     padding: 10,
-    borderColor: "blue",
-    borderWidth: 1,
     width: "33%",
+
   },
 
   imageContainer: {
+    borderColor: "gray",
+    borderWidth: 2,
     height: 130,
     marginBottom: 20,
-    borderColor: "black",
-    borderWidth: 2
   },
 
   movieImage: {
@@ -47,12 +46,18 @@ const styles = StyleSheet.create({
 
   bottomPart: {
     flex: 1,
-    backgroundColor: "yellow",
     justifyContent: "space-between"
   },
 
-  centerText: {
-    textAlign: "center"
+  title: {
+    textAlign: "center",
+    fontWeight: "bold"
+  },
+
+  popularity: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "rgb(46, 81, 162)"
   }
 })
 

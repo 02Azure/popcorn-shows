@@ -40,21 +40,18 @@ export default function Home({ navigation }) {
   let tvTiles = displayHandler(allShows, showTileCb, "tvseries")
 
   return(
-    <ScrollView>
-      <Text>Welcome to Popcorn Shows!</Text>
-      <Text onPress={ () => { navigation.navigate("Add", { show: "movie" } ) } }>Add new Movie</Text>
-      <Text onPress={ () => { navigation.navigate("Add", { show: "tv" } ) } }>Add new Tv</Text>
-      <Text onPress={ () => { navigation.navigate("Favorites") } }>My Favorites</Text>
+    <ScrollView style={ styles.mainContainer } contentContainerStyle= { styles.mainContainerContent}>
+      <Text style={ styles.mainTitle }>Welcome to Popcorn Shows!</Text>
 
-        <View>
-          <Text>Movies</Text>
+        <View style={ styles.showTypeContainer }>
+          <Text style={ styles.subTitle }>Movies</Text>
           <View style={ styles.showTilesContainer }>
             { movieTiles }
           </View> 
         </View>
 
-        <View>
-          <Text>Tv Series</Text>
+        <View style={ styles.showTypeContainer }>
+          <Text style={ styles.subTitle }>Tv Series</Text>
           <View style={ styles.showTilesContainer }>
             { tvTiles }
           </View> 
@@ -64,9 +61,29 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    padding: "3%"
+  },
+  mainContainerContent: {
+    alignItems: "center"
+  },
+  showTypeContainer: {
+    paddingVertical: "5%",
+    width: "100%"
+  },  
+  mainTitle: {
+    paddingTop: 3,
+    fontSize: 22,
+    fontWeight: "bold"
+  },  
+  subTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+    paddingBottom: "2%"
+  },
   showTilesContainer: {
     flexWrap: "wrap",
-    borderColor: "red",
+    borderColor: "maroon",
     borderWidth: 2,
     flexDirection: "row"
   },
